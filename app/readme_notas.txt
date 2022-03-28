@@ -14,3 +14,9 @@ D:\xampp\apache\conf\extra\httpd-vhosts.conf
 	127.0.0.1       localhost
     127.0.0.1       apirest-laravel.com
 #	::1             localhost
+
+// C24
+// C25
+https://laravel.com/docs/8.x/validation#manually-creating-validators
+// C26
+https://laravel.com/docs/8.x/hashing
