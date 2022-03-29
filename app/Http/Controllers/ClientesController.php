@@ -29,6 +29,7 @@ class ClientesController extends Controller
     /*======================================================================================*/
 
     public function store(Request $request)
+
     {
         //      $datos =   array("primer_nombre"=>$request->input("primer_nombre"));
         //     // echo '<pre>'; print_r($datos); echo '</pre>';
@@ -36,46 +37,66 @@ class ClientesController extends Controller
         //  echo '<pre>'; print_r($datos); echo '</pre>';
 
         //! C25
-        $validator = Validator::make($datos, [
-            'primer_nombre' => 'required|string|max:255',
-            'primer_apellido' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:clientes'
+        if (!empty($datos)) //!C27
+        {
+            $validator = Validator::make($datos, [
+                'primer_nombre' => 'required|string|max:255',
+                'primer_apellido' => 'required|string|max:255',
+                'email' => 'required|string|email|unique:clientes'
 
-        ]);
-        //! C25
-        if ($validator->fails()) {
-
-            $json = array(
-                "detalle" => "Registro no validos"
-            );
-            return json_encode($json, true);
-        } else {
-            $id_cliente = Hash::make($datos["primer_nombre"] . $datos["primer_apellido"] . $datos["email"]); //! C26
-            $llave_secreta = Hash::make($datos["email"] . $datos["primer_apellido"] . $datos["primer_nombre"], ["rounds" => 12]); //! C26
-
-            $clientes = new Clientes(); //!C27
-
-            $clientes->primer_nombre = $datos["primer_nombre"];
-
-            $clientes->primer_apellido = $datos["primer_apellido"];
-            $clientes->primer_apellido = $datos["primer_apellido"];
-            $clientes->email = $datos["email"];
-            $clientes->id_cliente = $id_cliente;
-            $clientes->llave_secreta = $llave_secreta;
+            ]);
+            //! C25
+            if (!$validator->fails()) {
 
 
 
+                $id_cliente = Hash::make($datos["primer_nombre"] . $datos["primer_apellido"] . $datos["email"]); //! C26
+                $llave_secreta = Hash::make($datos["email"] . $datos["primer_apellido"] . $datos["primer_nombre"], ["rounds" => 12]); //! C26
+
+                $clientes = new Clientes(); //!C27
+
+                $clientes->primer_nombre = $datos["primer_nombre"];
+                $clientes->primer_apellido = $datos["primer_apellido"];
+                $clientes->email = $datos["email"];
+                $clientes->id_cliente = $id_cliente;
+                $clientes->llave_secreta = $llave_secreta;
+
+                $clientes->save(); //!C27
+
+                $json = array(
+                    "status" => 200,
+                    "id_cliente" => $id_cliente,
+                    "llave_secreta" => $llave_secreta
+
+                );
+
+                return json_encode($json, true);
+            } else { //!C27
+                $json = array(
+
+                    "status" => 404,
+                    "detalle " => "registro con errores"
+
+                );
+
+                return json_encode($json, true);
+            }
 
 
-            echo '<pre>';
-            print_r($id_cliente);
-            echo '</pre>';
-            echo '<pre>';
-            print_r($clientes->email);
-            echo '</pre>';
-            echo '<pre>';
-            print_r($llave_secreta);
-            echo '</pre>';
+
+
+
+
+
+            // echo '<pre>';
+            // print_r($id_cliente);
+            // echo '</pre>';
+            // echo '<pre>';
+            // print_r($clientes->email);
+            // echo '</pre>';
+            // echo '<pre>';
+            // print_r($llave_secreta);
+            // echo '</pre>';
         }
     }
 }
