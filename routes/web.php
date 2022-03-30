@@ -21,3 +21,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('/', App\Http\Controllers\ClientesController::class);//! C23
 Route::resource('/registro', App\Http\Controllers\ClientesController::class);//! C24
+Route::resource('/cursos', App\Http\Controllers\CursosController::class);//! C28
