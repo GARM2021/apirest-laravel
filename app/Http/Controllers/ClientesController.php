@@ -58,15 +58,15 @@ class ClientesController extends Controller
                 $clientes->primer_nombre = $datos["primer_nombre"];
                 $clientes->primer_apellido = $datos["primer_apellido"];
                 $clientes->email = $datos["email"];
-                $clientes->id_cliente = $id_cliente;
-                $clientes->llave_secreta = $llave_secreta;
+                $clientes->id_cliente = str_replace ('$', 'a', $id_cliente); //!C29 
+                $clientes->llave_secreta = str_replace('$', 'o', $llave_secreta); //!C29 
 
                 $clientes->save(); //!C27
 
                 $json = array(
                     "status" => 200,
-                    "id_cliente" => $id_cliente,
-                    "llave_secreta" => $llave_secreta
+                    "id_cliente" => str_replace ('$', 'a', $id_cliente), //!C29
+                    "llave_secreta" => str_replace('$', 'o', $llave_secreta) //!C29
 
                 );
 
