@@ -16,7 +16,18 @@ D:\xampp\apache\conf\extra\httpd-vhosts.conf
 #	::1             localhost
 
 // C24
+VerifyCsrfToken.php
 // C25
 https://laravel.com/docs/8.x/validation#manually-creating-validators
 // C26
 https://laravel.com/docs/8.x/hashing
+
+//C30 
+Marcaba el error 419 Page Expired 
+
+El problema es que no estamos enviando el token CSRF con el formulario.
+
+>>>no habia guardade el protected $except del request de INSERTAR CURSO <<<
+
+
+

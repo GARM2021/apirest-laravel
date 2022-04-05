@@ -23,7 +23,7 @@ class CursosController extends Controller
             "token" => $token
         );
 
-    
+
         foreach ($clientes as $key => $value) {
 
 
@@ -34,17 +34,16 @@ class CursosController extends Controller
                 //!C28 Muestra todos los registros                                                             
                 /*======================================================================================*/
 
-               $cursos = Cursos::all();
+                $cursos = Cursos::all();
 
                 if (!empty($cursos)) {
-                    
+
                     $json = array(
                         "status" => 200,
                         "Total de Registros " => $cursos->count(),
                         "Detalles :" => $cursos
 
                     );
-                    
                 } else {
 
                     $json = array(
@@ -53,14 +52,92 @@ class CursosController extends Controller
                         "detalle " => "registro con errores"
 
                     );
-                   
                 }
             }
-
-           
         }
 
         return json_encode($json, true);
-        
+    }
+    public function store(Request $request)
+    {
+        /*======================================================================================*/
+        //!C30 INSERTA REGISTRO CURSOS                                                            
+        /*======================================================================================*/
+
+        $token = $request->header('Authorization');
+        $clientes = Clientes::all();
+
+        $datos = [];
+        $json = [];
+
+        foreach ($clientes as $key => $value) {
+
+
+
+            if ("Basic " . base64_encode($value["id_cliente"] . ":" .  $value["llave_secreta"]) == $token) {
+
+
+                $datos = array(
+                    "titulo" => $request->input("titulo"),
+                    "descripcion" => $request->input("descripcion"),
+                    "instructor" => $request->input("instructor"),
+                    "imagen" => $request->input("imagen"),
+                    "precio" => $request->input("precio")
+                );
+                ///////////////////////////////////////////////////////////       
+
+                if (!empty($datos)) //!C30
+                {
+                    $validator = Validator::make($datos, [
+                        'titulo' =>  'required|string|max:255|unique:cursos',
+                        'descripcion' =>  'required|string|max:255|unique:cursos',
+                        'instructor'  =>  'required|string|max:255',
+                        'imagen' =>  'required|string|max:255|unique:cursos',
+                        'precio' =>  'required|numeric'
+
+
+                    ]);
+
+                    if ($validator->fails()) {
+
+                        $json = array(
+
+                            "status" => 404,
+                            "detalle " => "registro con errores posible titulo repetido"
+
+                        );
+                    } else {
+
+                        $cursos = new Cursos();
+                        $cursos->titulo = $datos["titulo"];
+                        $cursos->descripcion = $datos["descripcion"];
+                        $cursos->instructor = $datos["instructor"];
+                        $cursos->imagen = $datos["imagen"];
+                        $cursos->precio = $datos["precio"];
+                        $cursos->id_creador = $value["id"];
+
+                        $cursos->save();
+                    }
+                } else {
+                    $json = array(
+
+                        "status" => 404,
+                        "detalle " => "registros no pueden estar vacios"
+
+                    );
+                }
+
+                $json = array(
+
+                    "status" => 200,
+                    "detalle " => "Registro dado de alta"
+
+                );
+
+                return json_encode($json, true);
+            }
+        }
+
+        return json_encode($json, true);
     }
 }
