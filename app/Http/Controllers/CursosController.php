@@ -41,7 +41,7 @@ class CursosController extends Controller
                     $json = array(
                         "status" => 200,
                         "Total de Registros " => $cursos->count(),
-                        "Detalles :" => $cursos
+                        "detalles" => $cursos //!C30.1
 
                     );
                 } else {
