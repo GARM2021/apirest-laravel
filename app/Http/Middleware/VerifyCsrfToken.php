@@ -14,7 +14,8 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         
         'http://localhost:8000/registro', //! C24
-        'http://localhost:8000/cursos' //! C30
+        'http://localhost:8000/cursos', //! C30
+        'http://localhost:8000/cursos/*' //! C31
 
     ];
 }
