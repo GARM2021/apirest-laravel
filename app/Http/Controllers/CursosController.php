@@ -142,6 +142,50 @@ class CursosController extends Controller
 
         return json_encode($json, true);
     }
+
+    public function show($id, Request $request)
+    {
+         /*======================================================================================*/
+        //!C31 SHOW REGISTRO CURSOS                                                            
+        /*======================================================================================*/
+
+        $token = $request->header('Authorization');
+        $clientes = Clientes::all();
+
+        $datos = [];
+        $json = [];
+
+        foreach ($clientes as $key => $value) {
+
+
+
+            if ("Basic " . base64_encode($value["id_cliente"] . ":" .  $value["llave_secreta"]) == $token) {
+                $cursos = Cursos::where("id", $id)->get();
+
+                if (!empty($cursos)) {
+
+                    $json = array(
+                        "status" => 200,
+                        "detalles" => $cursos //!C31.1
+
+                    );
+                } else {
+
+                    $json = array(
+
+                        "status" => 404,
+                        "detalle " => "registro con errores"
+
+                    );
+                }
+
+            }
+        }
+
+        return json_encode($json, true);
+
+
+    }
     public function update($id, Request $request)
     {
         /*======================================================================================*/
