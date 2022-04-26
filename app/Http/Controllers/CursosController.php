@@ -40,7 +40,7 @@ class CursosController extends Controller
 
                     $json = array(
                         "status" => 200,
-                        "Total de Registros " => $cursos->count(),
+                        "Total de Registros index" => $cursos->count(),
                         "detalles" => $cursos //!C30.1
 
                     );
@@ -104,8 +104,9 @@ class CursosController extends Controller
 
                             "status" => 404,
                             "detalle " => "registro con errores posible titulo repetido"
-
+                            
                         );
+                        return json_encode($json, true);
                     } else {
 
                         $cursos = new Cursos();
@@ -125,8 +126,9 @@ class CursosController extends Controller
                         "detalle " => "registros no pueden estar vacios"
 
                     );
+                    return json_encode($json, true);
                 }
-
+               
                 $json = array(
 
                     "status" => 200,

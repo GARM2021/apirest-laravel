@@ -14,11 +14,22 @@ class ClientesController extends Controller
 
     public function index()
     {
-        $json = array(
-            "detalle" => "no encontrado"
-        );
+        // $json = array(
+        //     "detalle" => "no encontrado"
+        // );
 
-        echo json_encode($json, true); //! C22 convierte array a json_decode //convierte un jason en array 
+        // echo json_encode($json, true); //! C22 convierte array a json_decode //convierte un jason en array 
+
+        $clientes = Clientes::all();
+        if (!empty($clientes)) {
+            $json = array(
+                "status" => 200,
+                        "Total de Clientes " => $clientes->count(),
+                        "detalles" => $clientes //!Cgarm
+              
+            );
+            return json_encode($json, true);
+        }
 
 
 
@@ -65,6 +76,7 @@ class ClientesController extends Controller
 
                 $json = array(
                     "status" => 200,
+                    "detalle"=> "Registro exitoso tome sus credenciales y guardelas",
                     "id_cliente" => str_replace ('$', 'a', $id_cliente), //!C29
                     "llave_secreta" => str_replace('$', 'o', $llave_secreta) //!C29
 
@@ -72,6 +84,9 @@ class ClientesController extends Controller
 
                 return json_encode($json, true);
             } else { //!C27
+                 /*======================================================================================*/
+                                      //! si falla la validacion                                                             
+                 /*======================================================================================*/
                 $json = array(
 
                     "status" => 404,
@@ -82,21 +97,11 @@ class ClientesController extends Controller
                 return json_encode($json, true);
             }
 
-
-
-
-
-
-
-            // echo '<pre>';
-            // print_r($id_cliente);
-            // echo '</pre>';
-            // echo '<pre>';
-            // print_r($clientes->email);
-            // echo '</pre>';
-            // echo '<pre>';
-            // print_r($llave_secreta);
-            // echo '</pre>';
         }
+    }
+
+    public function clientes()
+    {
+      
     }
 }

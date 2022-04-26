@@ -20,5 +20,6 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', [App\Http\Controllers\ClientesController::class, 'index']);
 
 Route::resource('/', App\Http\Controllers\ClientesController::class);//! C23
+Route::resource('/clientes', App\Http\Controllers\ClientesController::class);//! Cgarm
 Route::resource('/registro', App\Http\Controllers\ClientesController::class);//! C24
 Route::resource('/cursos', App\Http\Controllers\CursosController::class);//! C28
