@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Cursos;
 use App\Models\Clientes;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
 
 class CursosController extends Controller
 {
@@ -34,7 +37,12 @@ class CursosController extends Controller
                 //!C28 Muestra todos los registros                                                             
                 /*======================================================================================*/
 
-                $cursos = Cursos::all();
+              //  $cursos = Cursos::all(); //!C28
+
+              $cursos = DB::table('cursos') //!C33
+              ->join('clientes', 'cursos.id_creador', '=',  'clientes.id')
+              ->select('cursos.id', 'cursos.titulo', 'cursos.descripcion', 'cursos.instructor', 'cursos.imagen', 'cursos.id_creador', 'clientes.primer_nombre', 'clientes.primer_apellido')
+              ->get();
 
                 if (!empty($cursos)) {
 

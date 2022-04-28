@@ -29,5 +29,6 @@ El problema es que no estamos enviando el token CSRF con el formulario.
 
 >>>no habia guardade el protected $except del request de INSERTAR CURSO <<<
 
-
+//C33
+En phpMyAdmin al realizar las RELACIONES no hubo necesidad de crear indices para las llaves foraneas cursos.id_creador
 
