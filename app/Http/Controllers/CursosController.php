@@ -145,7 +145,7 @@ class CursosController extends Controller
 
     public function show($id, Request $request)
     {
-         /*======================================================================================*/
+        /*======================================================================================*/
         //!C31 SHOW REGISTRO CURSOS                                                            
         /*======================================================================================*/
 
@@ -178,13 +178,10 @@ class CursosController extends Controller
 
                     );
                 }
-
             }
         }
 
         return json_encode($json, true);
-
-
     }
     public function update($id, Request $request)
     {
@@ -284,8 +281,68 @@ class CursosController extends Controller
         $json = array(
 
             "status" => 200,
-            "detalle " => "Usuario no autorizado ");
+            "detalle " => "Usuario no autorizado "
+        );
 
         return json_encode($json, true);
+    }
+
+    public function destroy($id, Request $request)
+    {
+        /*======================================================================================*/
+        //!C32 BORRA REGISTRO CURSOS                                                            
+        /*======================================================================================*/
+
+        $token = $request->header('Authorization');
+        $clientes = Clientes::all();
+
+        $datos = [];
+        $json = [];
+
+        foreach ($clientes as $key => $value) {
+
+
+
+            if ("Basic " . base64_encode($value["id_cliente"] . ":" .  $value["llave_secreta"]) == $token) {
+
+                $validar = Cursos::where("id", $id)->get();
+
+                if (!$validar->isEmpty()) {
+                    //    if (!empty($validar)) {
+
+                    if ($value["id"] == $validar[0]["id_creador"]) {
+                        $curso =  Cursos::where("id", $id)->delete();
+
+                        $json = array(
+
+                            "status" => 200,
+                            "detalle " => "Se ha borrado su curso con exito "
+
+                        );
+
+                        return json_encode($json, true);
+                    } else {
+                        $json = array(
+
+                            "status" => 404,
+                            "detalle " => "Ud no puede borrar este curso  "
+
+                        );
+
+                        return json_encode($json, true);
+                    }
+                } else {
+
+                    $json = array(
+
+                        "status" => 404,
+                        "detalle " => "Curso no existe   "
+
+                    );
+
+                    return json_encode($json, true);
+                }
+            }
+        }
     }
 }
