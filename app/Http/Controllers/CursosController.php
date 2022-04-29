@@ -41,7 +41,7 @@ class CursosController extends Controller
 
               $cursos = DB::table('cursos') //!C33
               ->join('clientes', 'cursos.id_creador', '=',  'clientes.id')
-              ->select('cursos.id', 'cursos.titulo', 'cursos.descripcion', 'cursos.instructor', 'cursos.imagen', 'cursos.id_creador', 'clientes.primer_nombre', 'clientes.primer_apellido')
+              ->select('cursos.id', 'cursos.titulo', 'cursos.descripcion', 'cursos.instructor', 'cursos.precio', 'cursos.imagen', 'cursos.id_creador', 'clientes.primer_nombre', 'clientes.primer_apellido')
               ->get();
 
                 if (!empty($cursos)) {
